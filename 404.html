@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>PuntoMigrare - Redirecting...</title>
+    <script type="text/javascript">
+      // Get the current path from the URL.
+      var path = window.location.pathname;
+
+      // Check if the path is a deep link within our app's subdirectory.
+      // We are looking for something like /punto-migrare-react/documenti
+      var segment = path.split('/')[1];
+      
+      // If the first segment matches our repo name, we need to redirect.
+      if (segment === 'punto-migrare-react') {
+        // Get the full path including search parameters.
+        var fullPath = window.location.pathname + window.location.search + window.location.hash;
+        
+        // Use session storage to pass the path to the main app.
+        sessionStorage.setItem('redirectPath', fullPath);
+        
+        // Redirect to the base of the app.
+        window.location.replace('/punto-migrare-react/');
+      }
+    </script>
+  </head>
+  <body>
+    <!-- You can add a simple loading message here if you want -->
+    <p>If you are not redirected automatically, please <a href="/punto-migrare-react/">click here</a>.</p>
+  </body>
+</html>
