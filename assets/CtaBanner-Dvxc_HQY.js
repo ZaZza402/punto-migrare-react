@@ -1,0 +1,1 @@
+import{j as a,H as e}from"./index-DS7dDGjG.js";const r=({headline:n,buttonText:s,buttonLink:t="/#booking"})=>a.jsx("section",{className:"cta-banner-section","data-aos":"fade-up",children:a.jsxs("div",{className:"container cta-banner-container",children:[a.jsx("h2",{children:n}),a.jsx(e,{smooth:!0,to:t,className:"cta-button",children:s})]})});export{r as C};
