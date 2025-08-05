@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PuntoMigrare</title>
+    <meta name="description" content="PuntoMigrare offre consulenza esperta per pratiche di immigrazione, CAF e gestione di collaboratori domestici." />
+    <meta name="keywords" content="immigrazione, caf, patronato, colf, badanti, permesso di soggiorno, 730, isee, roma" />
+    <meta name="author" content="PuntoMigrare" />
+    
+    <!-- This is the 404 redirect script -->
+    <script type="text/javascript">
+      var redirect = sessionStorage.getItem('redirectPath');
+      sessionStorage.removeItem('redirectPath');
+      if (redirect && redirect !== window.location.pathname) {
+        history.replaceState(null, null, redirect);
+      }
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Sans+3:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- 
+      THIS IS THE CRITICAL FIX: 
+      The path MUST be an absolute path from the root, starting with a slash.
+      This is the standard Vite requires to correctly inject the built asset paths.
+    -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

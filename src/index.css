@@ -1,0 +1,1253 @@
+/* --- PASTE THE ENTIRE CONTENT OF YOUR style.css FILE HERE --- */
+
+/* --- 0. CSS RESET & ROOT VARIABLES --- */
+:root {
+    --primary-blue: #154360;
+    --accent-orange: #f39c12;
+    --dark-text: #333;
+    --light-text: #f8f9fa;
+    --light-bg: #f8f9fa;
+    --font-heading: 'Playfair Display', serif; /* CHANGED */
+    --font-body: 'Source Sans 3', sans-serif; /* CHANGED */
+    --nav-height: 70px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-height);
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--dark-text);
+    line-height: 1.6;
+    background-color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6, button {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 2rem;
+    overflow: hidden; /* This is the general rule causing the issue on the navbar */
+}
+
+section {
+    padding: 5rem 0;
+}
+
+/* --- 1.A HEADER & NAVIGATION --- */
+.main-header {
+    position: fixed;
+    top: 0; /* Changed to stick to the very top */
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* --- THE FIX: Allow Dropdown to be Visible --- */
+/* This rule specifically targets the navbar and overrides the overflow property from .container */
+.navbar.container {
+    overflow: visible;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent; /* Default state is now fully transparent */
+    border-radius: 0; /* Remove radius for full-width design */
+    border: none;
+    transition: padding 0.4s ease; /* Animate the padding for a shrink effect */
+    padding: 1.5rem 0; /* Larger padding by default */
+}
+
+/* --- NEW SCROLLED HEADER STATE --- */
+.main-header.scrolled {
+    background-color: rgba(21, 67, 96, 0.95); /* Semi-transparent primary blue */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.main-header.scrolled .navbar {
+    padding: 0.8rem 0; /* Smaller padding when scrolled, creating a shrink effect */
+}
+
+/* /src/index.css */
+
+.navbar-logo {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--primary-blue);
+    /* The text-shadow property has been removed */
+    transition: color 0.4s ease, text-shadow 0.4s ease; /* Updated transition for smoothness */
+}
+
+/* --- NEW DYNAMIC LINK COLORS --- */
+
+/* This rule applies ONLY when the header has the 'scrolled' class */
+.main-header.scrolled .nav-links li a {
+    color: var(--light-text); /* Changes the link color to white when scrolled */
+}
+
+/* We also need a new hover state for when the links are already orange */
+.main-header.scrolled .nav-links li a:hover {
+    color: var(--accent-orange); /* CHANGED: Orange on hover when scrolled */
+    border-color: var(--accent-orange);
+}
+
+/* This rule ONLY applies when the header has the 'scrolled' class */
+.main-header.scrolled .navbar-logo {
+    color: var(--light-text); /* Changes the logo color to white */
+    text-shadow: none; /* Removes the shadow on the solid background */
+}
+
+.navbar-logo span {
+    color: var(--accent-orange);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-links li {
+    list-style: none;
+}
+
+.nav-links li a {
+    font-family: var(--font-heading);
+    color: var(--accent-orange); /* CHANGED: Orange by default */
+    font-weight: 900;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.4s ease, border-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.nav-links li a:hover {
+    color: var(--light-text); /* CHANGED: White on hover */
+    border-color: var(--light-text);
+}
+
+/* Desktop Dropdown Styles */
+.nav-item.dropdown {
+    position: relative;
+}
+
+/* Desktop Dropdown Styles */
+.dropdown-menu {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    /* 
+      THE FIX IS HERE: 
+      Changed from a transparent black to the brand's primary blue.
+      This now perfectly matches the background of the scrolled header.
+    */
+    background-color: rgba(21, 67, 96, 0.95); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: absolute;
+    top: 120%; 
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 250px;
+    border-radius: 12px;
+    padding: 0.5rem 0;
+    list-style: none;
+    z-index: 1001;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: opacity 0.3s ease, top 0.3s ease, visibility 0.3s;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    top: 100%;
+    visibility: visible;
+}
+
+.dropdown-menu li a {
+    color: var(--light-text);
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border-bottom: none !important;
+}
+
+.dropdown-menu li a:hover {
+    background-color: var(--accent-orange);
+    color: var(--primary-blue) !important;
+    border-color: transparent !important;
+}
+
+.hamburger-menu {
+    display: none;
+    cursor: pointer;
+    font-size: 1.8rem;
+    color: var(--accent-orange);
+}
+
+/* --- MOBILE NAVIGATION PANEL --- */
+.mobile-nav-panel {
+    position: fixed;
+    top: 0;
+    right: 0; /* Changed from right: -100% */
+    width: 80%;
+    max-width: 320px;
+    height: 100%;
+    background-color: var(--primary-blue);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 6rem;
+    gap: 1rem;
+    z-index: 1001;
+}
+
+.mobile-nav-panel > a {
+    font-family: var(--font-heading);
+    color: var(--light-text);
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+}
+
+/* --- NEW MOBILE NAV ANIMATION STYLES --- */
+.mobile-nav-links-container {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mobile-nav-links-container > li > a {
+    font-family: var(--font-heading);
+    color: var(--accent-orange);
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    display: block; /* Make the whole area clickable */
+}
+.close-icon {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: var(--light-text);
+    cursor: pointer;
+}
+
+.mobile-nav-accordion {
+    width: 100%;
+    text-align: center;
+}
+
+.mobile-nav-accordion-header {
+    font-family: var(--font-heading);
+    color: var(--accent-orange); /* CHANGED: to Orange */
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mobile-nav-accordion-header .fas {
+    transition: transform 0.3s ease;
+    font-size: 1rem;
+}
+
+.mobile-nav-accordion.open .mobile-nav-accordion-header .fas {
+    transform: rotate(180deg);
+}
+
+.mobile-nav-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    background-color: rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-nav-accordion-content.open {
+    max-height: 200px;
+}
+
+.mobile-nav-accordion-content a {
+    color: var(--light-text);
+    padding: 0.8rem 1rem;
+    font-size: 1.1rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-accordion-content a:hover {
+    background-color: var(--accent-orange);
+    color: var(--primary-blue);
+}
+/* --- HERO SECTION --- */
+#hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* 
+      The background and background-image properties have been REMOVED.
+      This is now handled by an inline style in Home.jsx.
+      We must keep the 'background-size' and 'background-position' properties.
+    */
+    background-size: cover;
+    background-position: center center;
+    padding: 0 1rem;
+}
+
+#hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--light-text); /* CHANGED to white */
+    /* ADDED a sharp shadow for contrast */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+    min-height: 120px; /* Prevents layout shift as text types */
+}
+
+#hero p {
+    font-size: 1.3rem;
+    max-width: 600px;
+    margin-bottom: 2rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--light-text); /* CHANGED to white */
+    /* ADDED a sharp shadow for contrast */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.cta-button {
+    display: inline-block;
+    background: var(--primary-blue);
+    color: var(--light-text);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    border: 2px solid var(--primary-blue);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: transparent;
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+}
+
+/* --- HOMEPAGE SECTIONS --- */
+#about { background: var(--light-bg); }
+#about .container { max-width: 800px; text-align: center; }
+#about p { font-size: 1.2rem; }
+
+#services .container { max-width: 900px; }
+.accordion-item { margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+.accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; cursor: pointer; background-color: #f1f1f1; transition: background-color 0.3s; }
+.accordion-header:hover { background-color: #e0e0e0; }
+.accordion-header h3 { font-family: var(--font-heading); font-size: 1.5rem; color: var(--dark-text); display: flex; align-items: center; gap: 1rem; }
+.accordion-header h3 i { color: var(--primary-blue); }
+.accordion-header .chevron-icon { font-size: 1.2rem; transition: transform 0.4s ease; }
+.accordion-details { max-height: 0; overflow: hidden; padding: 0 1.5rem; background: #fff; transition: max-height 0.5s ease-out, padding 0.5s ease-out; }
+.accordion-details.open { max-height: 1000px; padding: 1.5rem 1.5rem; }
+.accordion-item.active .accordion-header .chevron-icon { transform: rotate(180deg); }
+.accordion-details h4 { font-family: var(--font-heading); font-weight: 900; text-transform: none; color: var(--primary-blue); font-size: 1.1rem; margin-top: 1.2rem; margin-bottom: 0.8rem; padding-bottom: 0.3rem; border-bottom: 2px solid var(--accent-orange); display: inline-block; }
+.accordion-details h4:first-of-type { margin-top: 0; }
+.accordion-details ul { list-style: none; padding-left: 0; }
+.accordion-details li { font-size: 1.05rem; border-bottom: 1px solid #eee; }
+.accordion-details li:last-child { border-bottom: none; }
+.accordion-details li a { display: block; padding: 0.6rem 0.5rem; color: var(--dark-text); text-decoration: none; transition: color 0.3s ease, transform 0.3s ease; }
+.accordion-details li a:hover { color: var(--accent-orange); transform: translateX(5px); }
+
+#contact { background: var(--light-bg); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: flex-start; }
+.map-container iframe { width: 100%; height: 300px; border: 0; border-radius: 8px; }
+.address-card { background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-top: 1.5rem; }
+.address-card h3 { color: var(--primary-blue); margin-bottom: 1rem; font-size: 1.2rem; }
+.contact-form .form-group { margin-bottom: 1.5rem; }
+.contact-form input, .contact-form textarea { width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 5px; font-family: var(--font-body); font-size: 1rem; }
+.contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-orange); }
+.contact-form textarea { min-height: 150px; resize: vertical; }
+.submit-btn { width: 100%; padding: 1rem; background-color: var(--accent-orange); color: #fff; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer; transition: background-color 0.3s; }
+.submit-btn:hover { background-color: #d1880f; }
+
+#pre-footer { text-align: center; padding: 3rem 0; }
+.contact-channels { display: flex; justify-content: center; align-items: center; gap: 4rem; flex-wrap: wrap; }
+.channel { text-align: center; }
+.channel-icon { display: flex; justify-content: center; align-items: center; width: 80px; height: 80px; background: var(--primary-blue); color: var(--light-text); border-radius: 50%; font-size: 2.5rem; margin: 0 auto 1rem auto; transition: transform 0.3s, background-color 0.3s; }
+.channel:hover .channel-icon { transform: scale(1.1); background-color: var(--accent-orange); }
+.channel h3 { font-family: var(--font-heading); color: var(--primary-blue); font-size: 1.2rem; }
+
+/* --- SERVICE PAGE STYLES --- */
+.service-page-container { 
+    max-width: 900px; 
+    margin: 0 auto; 
+    padding: 8rem 2rem 4rem 2rem;
+    background-color: #fff; 
+}
+.service-page-container h1 { font-size: 2.8rem; text-align: center; margin-bottom: 1rem; }
+.service-page-container .intro { text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto 3rem auto; color: #555; }
+.service-page-container .back-link { display: inline-block; margin-bottom: 2rem; color: var(--accent-orange); font-family: var(--font-heading); text-transform: uppercase; font-weight: 900; }
+.service-page-container .back-link:hover { text-decoration: underline; }
+.service-page-container section { padding: 2.5rem 0; border-top: 1px solid #eee; scroll-margin-top: 6rem; }
+.service-page-container section:first-of-type { border-top: none; }
+.service-page-container h2 { font-size: 2.2rem; margin-top: 0; text-align: left; }
+.service-page-container h3 { font-size: 1.6rem; color: var(--dark-text); margin-top: 2.5rem; text-transform: none; text-align: left; }
+.service-page-container p { font-size: 1.1rem; }
+/* --- START OF ADDED CSS --- */
+
+.service-page-container section h4 {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    text-transform: none;
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid var(--accent-orange);
+    display: inline-block;
+}
+
+.service-page-container section ul {
+    list-style: disc;
+    padding-left: 20px;
+    margin-bottom: 1.5rem;
+}
+
+.service-page-container section ul li {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+}
+
+.service-cta-button {
+    display: inline-block;
+    background: var(--accent-orange);
+    color: var(--primary-blue);
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    border: 2px solid var(--accent-orange);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    margin-top: 1rem;
+}
+
+.service-cta-button:hover {
+    background-color: transparent;
+    color: var(--accent-orange);
+    border-color: var(--accent-orange);
+}
+
+/* --- END OF ADDED CSS --- */
+/* --- FOOTER (Shared) --- */
+.main-footer {
+    background-color: var(--primary-blue);
+    color: var(--light-text);
+    padding: 4rem 0 2rem 0;
+}
+.footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 3rem; }
+.footer-col h4 { font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 1rem; color: var(--accent-orange); }
+.footer-logo { font-family: var(--font-heading); font-size: 2rem; margin-bottom: 1rem; }
+.footer-logo span { color: var(--accent-orange); }
+.footer-col p { font-size: 0.9rem; max-width: 250px; }
+.footer-col ul li { margin-bottom: 0.7rem; }
+.footer-col a { color: var(--light-text); transition: color 0.3s; font-size: 0.95rem; }
+.footer-col a:hover { color: var(--accent-orange); }
+.social-icons { display: flex; gap: 1rem; }
+.social-icons a { font-size: 1.5rem; }
+.footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.2); font-size: 0.9rem; }
+.footer-bottom p { margin-bottom: 0.5rem; }
+.footer-bottom a { margin: 0 0.5rem; }
+
+/* --- WIDGETS (Shared) --- */
+.cookie-banner { position: fixed; bottom: 0; left: 0; width: 100%; background-color: rgba(21, 67, 96, 0.95); backdrop-filter: blur(5px); color: var(--light-text); padding: 1.5rem; display: flex; justify-content: center; align-items: center; text-align: center; gap: 1rem; z-index: 2000; transform: translateY(100%); transition: transform 0.5s ease-in-out; }
+.cookie-banner.show { transform: translateY(0); }
+.cookie-banner p { margin: 0; font-size: 0.9rem; }
+#cookie-accept-btn { background: var(--accent-orange); color: #fff; border: none; padding: 0.6rem 1.2rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; white-space: nowrap; }
+
+/* --- NEW FLOATING CONTACT COMPONENT STYLES --- */
+.contact-float-container {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contact-float-main-btn {
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-blue);
+    color: var(--light-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem; /* Slightly smaller icon to fit better */
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    z-index: 1000; /* Ensure it's on top of the hidden icons */
+}
+
+.contact-float-main-btn:hover {
+    transform: scale(1.1);
+}
+
+.contact-float-container.open .contact-float-main-btn {
+    background-color: var(--accent-orange);
+    transform: rotate(360deg);
+}
+
+.contact-channel-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 1px 1px 8px rgba(0,0,0,0.2);
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    transform: scale(0);
+    opacity: 0;
+    position: relative; /* For tooltip positioning */
+}
+
+.contact-float-container.open .contact-channel-icon {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Add staggered delay for a nice animation */
+.contact-float-container.open .contact-channel-icon.whatsapp { transition-delay: 0.2s; }
+.contact-float-container.open .contact-channel-icon.phone { transition-delay: 0.1s; }
+.contact-float-container.open .contact-channel-icon.email { transition-delay: 0s; }
+
+
+.contact-channel-icon.whatsapp { background-color: #25D366; }
+.contact-channel-icon.phone { background-color: var(--primary-blue); }
+.contact-channel-icon.email { background-color: #c71610; }
+
+.contact-channel-icon:hover {
+    transform: scale(1.15) !important; /* !important to override the closing transform */
+}
+
+/* Tooltip styles */
+.contact-channel-icon .tooltip {
+    position: absolute;
+    right: 120%; /* Position to the left of the icon */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--dark-text);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.contact-channel-icon:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* --- RESPONSIVENESS --- */
+@media(max-width: 992px) {
+    h2 { font-size: 2.2rem; }
+    #hero h1 { font-size: 3rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media(max-width: 768px) {
+    :root { --nav-height: 60px; }
+    section { padding: 4rem 0; }
+    h2 { font-size: 2rem; }
+    .container { padding: 0 1rem; }
+
+    .nav-links { display: none; }
+    .hamburger-menu { display: block; }
+    
+    #hero h1 { font-size: 2.5rem; }
+    #hero p { font-size: 1.1rem; }
+
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-col { text-align: center; }
+    .footer-col p { margin-left: auto; margin-right: auto; }
+    .social-icons { justify-content: center; }
+
+    .cookie-banner { flex-direction: column; }
+    
+    .service-page-container { padding: 6rem 1rem 3rem 1rem; }
+    .service-page-container h1 { font-size: 2.2rem; }
+    .service-page-container h2 { font-size: 1.8rem; }
+}
+
+@media(max-width: 480px) {
+     #hero h1 { font-size: 2.2rem; }
+     .accordion-header h3 { font-size: 1.2rem; }
+     .contact-channels { gap: 2rem; }
+     .whatsapp-float-btn { width: 50px; height: 50px; font-size: 1.5rem; right: 15px; bottom: 15px; }
+}
+.accent-text {
+  color: var(--accent-orange);
+}
+/* --- BOOKING CALENDAR SECTION --- */
+
+#booking {
+    background-color: var(--light-bg);
+    padding-top: 5rem;
+}
+
+#booking h2 {
+    margin-bottom: 1rem;
+}
+
+#booking > .container > p {
+    text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+}
+
+.calendar-container {
+    max-width: 500px;
+    margin: auto;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.selected-date-info {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+    color: var(--primary-blue);
+    font-family: var(--font-heading);
+}
+
+/* Overriding react-calendar default styles */
+.react-calendar {
+    width: 100%;
+    border: none;
+    font-family: var(--font-body);
+}
+
+/* Style the top navigation bar (arrows and month/year) */
+.react-calendar__navigation button {
+    color: var(--primary-blue);
+    min-width: 44px;
+    background: none;
+    font-size: 1.2rem;
+    font-family: var(--font-heading);
+    border-radius: 8px;
+}
+.react-calendar__navigation button:hover {
+    background-color: #e6e6e6;
+}
+.react-calendar__navigation button:disabled {
+    background-color: #f0f0f0;
+    color: #ccc;
+}
+
+/* Style the day-of-the-week headers (Mon, Tue, etc.) */
+.react-calendar__month-view__weekdays__weekday {
+    text-align: center;
+    font-weight: 700;
+    color: var(--primary-blue);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    padding-bottom: 0.75em;
+}
+
+/* Style the individual date tiles */
+.react-calendar__tile {
+    max-width: 100%;
+    padding: 12px 6.6667px;
+    background: none;
+    text-align: center;
+    line-height: 16px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.react-calendar__tile:disabled {
+    background-color: #f8f9fa;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.react-calendar__tile:enabled:hover {
+    background-color: #e6e6e6;
+}
+
+/* Style for "Today" */
+.react-calendar__tile--now {
+    background: none;
+    border: 2px solid var(--accent-orange);
+}
+.react-calendar__tile--now:enabled:hover {
+    background: #e6e6e6;
+}
+
+/* Style for the ACTIVE/SELECTED date */
+.react-calendar__tile--active {
+    background: var(--accent-orange);
+    color: white;
+    border: 2px solid var(--accent-orange);
+}
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+    background: var(--accent-orange);
+}
+/* --- NEW BOOKING CALENDAR STYLES --- */
+.booking-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-top: 2rem;
+}
+
+.time-form-container {
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    min-height: 410px; /* Matches calendar height */
+}
+
+.time-form-container h4 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-transform: none;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.time-slots-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.75rem;
+}
+
+.time-slot-btn {
+    padding: 0.75rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
+    color: var(--dark-text);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.time-slot-btn:hover {
+    background-color: #e0e0e0;
+    border-color: #bbb;
+}
+
+.time-slot-btn.active {
+    background-color: var(--primary-blue);
+    color: var(--light-text);
+    border-color: var(--primary-blue);
+}
+
+.no-slots-message {
+    text-align: center;
+    color: #777;
+    padding: 2rem 0;
+}
+
+.booking-form {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+.booking-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.booking-form select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    background-color: white;
+    cursor: pointer;
+}
+
+.booking-form .submit-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.booking-confirmation {
+    text-align: center;
+    padding: 4rem 1rem;
+}
+
+.booking-confirmation h3 {
+    font-size: 2rem;
+    color: var(--accent-orange);
+}
+
+.form-error-message {
+    color: #D8000C;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+
+/* Responsive adjustments for the booking grid */
+@media(max-width: 992px) {
+    .booking-grid {
+        grid-template-columns: 1fr;
+    }
+    .time-form-container {
+        min-height: auto;
+    }
+}
+/* --- FIX FOR REACT-SELECT DROPDOWN OVERFLOW --- */
+.booking-form .select-container {
+    position: relative;
+    z-index: 10; /* Lifts the dropdown above other elements on the same level */
+}
+/* --- DOCUMENTS PAGE STYLES --- */
+.documents-page-container .intro {
+    margin-bottom: 4rem;
+}
+
+.documents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.document-card {
+    background-color: var(--light-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid #eee;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.document-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.document-card .icon-container {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem auto;
+    background-color: var(--primary-blue);
+    color: var(--light-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+}
+
+.document-card h3 {
+    font-size: 1.4rem;
+    color: var(--primary-blue);
+    text-transform: none;
+    margin-bottom: 1rem;
+}
+
+.document-card p {
+    font-size: 1rem;
+    color: #555;
+    flex-grow: 1; /* This makes all cards the same height */
+    margin-bottom: 2rem;
+}
+
+.document-card .download-btn {
+    display: inline-block;
+    background: var(--accent-orange);
+    color: #fff;
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    border: 2px solid var(--accent-orange);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.document-card .download-btn:hover {
+    background-color: transparent;
+    color: var(--accent-orange);
+}
+/* --- TESTIMONIALS SECTION STYLES --- */
+#testimonials {
+    background-color: var(--light-bg);
+    padding: 5rem 0;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.testimonial-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 2.5rem 2rem 2rem 2rem;
+    border-left: 5px solid var(--accent-orange);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-card .quote-icon {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    font-size: 3rem;
+    color: rgba(21, 67, 96, 0.1); /* Very subtle primary-blue */
+    z-index: 1;
+}
+
+.testimonial-card .quote-text {
+    font-style: italic;
+    color: #555;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 2;
+    flex-grow: 1; /* Ensures cards have the same height */
+    margin-bottom: 1.5rem;
+}
+
+.testimonial-card .author-info {
+    text-align: right;
+    margin-top: auto; /* Pushes author to the bottom */
+}
+
+.testimonial-card .author-name {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    color: var(--primary-blue);
+    margin: 0;
+}
+
+.testimonial-card .author-service {
+    font-size: 0.9rem;
+    color: #777;
+    margin: 0;
+}
+/* --- SWIPER CAROUSEL CUSTOM STYLES --- */
+.mySwiper {
+    padding: 2rem 0 4rem 0; /* Add padding to make space for navigation/pagination */
+    overflow: visible; /* Allows shadows and other elements to not be cut off */
+}
+
+/* Style the pagination dots */
+.swiper-pagination-bullet {
+    background-color: var(--primary-blue);
+    width: 10px;
+    height: 10px;
+    opacity: 0.5;
+    transition: opacity 0.3s, background-color 0.3s;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: var(--accent-orange);
+    opacity: 1;
+}
+
+/* Style the navigation arrows */
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--primary-blue);
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    color: var(--light-text);
+    background-color: var(--accent-orange);
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 1.2rem; /* Make the arrow icon smaller */
+    font-weight: 900;
+}
+
+/* Reposition arrows for larger screens */
+@media (min-width: 768px) {
+    .swiper-button-prev {
+        left: -25px;
+    }
+    .swiper-button-next {
+        right: -25px;
+    }
+}
+/* --- NEW MOBILE NAV FOOTER STYLES --- */
+.mobile-nav-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6); /* Semi-transparent white for subtlety */
+}
+
+.mobile-nav-footer .italian-quote {
+    font-style: italic;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.mobile-nav-footer .copyright-notice {
+    font-size: 0.85rem;
+    margin: 0;
+}
+/* --- LOADING SPINNER STYLES --- */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-blue); /* Use the brand's primary color for the background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 255, 255, 0.3); /* A semi-transparent white for the track */
+    border-top-color: var(--accent-orange); /* The brand's accent color for the moving part */
+    border-radius: 50%;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+/* --- FAQ SECTION STYLES --- */
+#faq {
+    padding: 5rem 0;
+    background-color: #fff; /* White background to stand out */
+}
+
+.faq-search-container {
+    max-width: 600px;
+    margin: 0 auto 3rem auto;
+    position: relative;
+}
+
+.faq-search-container .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.faq-search-container input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 2.5rem; /* Left padding for icon */
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-family: var(--font-body);
+}
+.faq-search-container input:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2);
+}
+
+.faq-accordion {
+    max-width: 800px;
+    margin: auto;
+}
+
+.faq-item {
+    border-bottom: 1px solid #eee;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--dark-text);
+}
+
+.faq-question.open {
+    color: var(--primary-blue);
+}
+
+.faq-toggle-icon {
+    color: var(--accent-orange);
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.faq-question.open .faq-toggle-icon {
+    transform: rotate(45deg);
+}
+
+.faq-answer-container {
+    overflow: hidden; /* This remains on the container that animates its height */
+}
+
+.faq-answer-content {
+    color: #555;
+    padding: 0 0 1.5rem 0; /* Apply padding to the content, not the animated container */
+    line-height: 1.7;
+    margin: 0; /* Reset default paragraph margin */
+}
+
+/* --- CTA BANNER SECTION STYLES --- */
+.cta-banner-section {
+    padding: 4rem 0;
+    background-color: var(--primary-blue);
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.05) 75%, transparent 75%, transparent);
+    background-size: 60px 60px;
+    margin-top: 3rem; /* Add space above the banner */
+}
+
+.cta-banner-container {
+    text-align: center;
+}
+
+.cta-banner-container h2 {
+    font-family: var(--font-heading);
+    color: var(--light-text);
+    font-size: 2.2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+}
+
+/* Re-using the .cta-button style from the hero section, but overriding colors for impact */
+.cta-banner-container .cta-button {
+    background-color: var(--accent-orange);
+    color: #fff;
+    border-color: var(--accent-orange);
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+.cta-banner-container .cta-button:hover {
+    background-color: #fff;
+    color: var(--accent-orange);
+    border-color: #fff;
+    transform: translateY(-5px);
+}
+
+@media(max-width: 768px) {
+    .cta-banner-container h2 {
+        font-size: 1.8rem;
+    }
+}
+/* --- FOOTER ENHANCEMENT --- */
+.social-icons-footer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
