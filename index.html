@@ -8,7 +8,7 @@
     <meta name="keywords" content="immigrazione, caf, patronato, colf, badanti, permesso di soggiorno, 730, isee, roma" />
     <meta name="author" content="PuntoMigrare" />
     
-    <!-- This is the 404 redirect script -->
+    <!-- This is the 404 redirect script for GitHub Pages -->
     <script type="text/javascript">
       var redirect = sessionStorage.getItem('redirectPath');
       sessionStorage.removeItem('redirectPath');
@@ -28,7 +28,7 @@
     <!-- 
       THIS IS THE CRITICAL FIX: 
       The path MUST be an absolute path from the root, starting with a slash.
-      This is the standard Vite requires to correctly inject the built asset paths.
+      This is the standard Vite requires to correctly inject the built asset paths during the build process.
     -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
